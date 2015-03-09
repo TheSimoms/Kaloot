@@ -1,0 +1,304 @@
+<div class="screen answer-screen" ios7lazyfix>
+    <div class="statusbar top">
+        <div class="info">
+            <div ng-class="scoreClass()" ng-cloak>{{totalScore}}</div>
+            <div class="playerrank" ng-bind-html="playerRank"></div>
+            <div class="username" ng-cloak>{{user.cleanName}}</div>
+        </div>
+        <div class="title">
+            <div class="number" ng-cloak>{{questionNumber(\'Q\')}}</div>
+            <div class="question" ng-cloak>{{statusBarTitle}}</div>
+        </div>
+    </div>
+    <div class="center valignwrapper selectanswer" ng-class="animatedBackgroundClass()">
+        <div class="valign">
+            <div class="answerButtons" ng-class="answerButtonsClass()">
+                <button class="answer answerA" type="button" tapstart="selectAnswer(0)"><span>A</span>
+                </button>
+                <button class="answer answerB" type="button" tapstart="selectAnswer(1)"><span>B</span>
+                </button>
+                <button class="answer answerC" type="button" tapstart="selectAnswer(2)" ng-show="showAnswer(2)"><span>C</span>
+                </button>
+                <button class="answer answerD" type="button" tapstart="selectAnswer(3)" ng-show="showAnswer(3)"><span>D</span>
+                </button>
+            </div>
+            <div class="answerFeedback pad" ng-class="answerFeedbackClass()">
+                <div class="spinner" spinner></div>
+                <h1 ng-bind-html="primaryFeedbackMessage"></h1> </div>
+            <div class="message" ng-class="messageClass()">
+                <div class="valign">
+                    <div class="result" ng-class="resultClass()">
+                        <div class="resultIcon" ng-class="resultIcon()"></div>
+                        <h1 ng-cloak ng-bind-html="resultMessage"></h1> </div>
+                    <button class="btn disabled selectedAnswer" ng-class="selectedAnswerClass()"><span bind-html="selectedAnswerLabel()"></span>
+                    </button>
+                    <h4 class="message_container" ng-bind-html="statusMessage" ng-class="statusMessageClass()"></h4> </div>
+            </div>
+        </div>
+    </div>
+    <div class="statusbar fixed bottom">
+        <div class="username" ng-cloak>{{user.cleanName}}</div>
+        <div ng-class="scoreClass()" ng-cloak>{{totalScore}}</div>
+        <div class="playerrank" ng-bind-html="playerRank"></div>
+    </div>
+</div>'), e.put("feedback.html", '
+<div class="screen feedback-screen" ios7lazyfix>
+    <div class="statusbar top">
+        <div class="info">
+            <div ng-class="scoreClass()" ng-cloak>{{totalScore}}</div>
+            <div class="playerrank" ng-bind-html="playerRank"></div>
+            <div class="username" ng-cloak>{{user.cleanName}}</div>
+        </div>
+        <div class="title">
+            <div class="question" ng-cloak>{{statusBarTitle}}</div>
+        </div>
+    </div>
+    <div class="sub-screen" ng-show="!done()">
+        <div class="center main valignwrapper feedback">
+            <div class="valign pad">
+                <div class="feedback-item">
+                    <div class="feedback-question">How fun was it?</div>
+                    <div class="feedback-controls">
+                        <div class="scale-control">
+                            <div class="scale-input">
+                                <input type="radio" name="feedback2" id="feedback2-1" value="1" ng-model="feedback.fun">
+                                <label for="feedback2-1" class="s1"></label>
+                            </div>
+                        </div>
+                        <div class="scale-control">
+                            <div class="scale-input">
+                                <input type="radio" name="feedback2" id="feedback2-2" value="2" ng-model="feedback.fun">
+                                <label for="feedback2-2" class="s2"></label>
+                            </div>
+                        </div>
+                        <div class="scale-control">
+                            <div class="scale-input">
+                                <input type="radio" name="feedback2" id="feedback2-3" value="3" ng-model="feedback.fun">
+                                <label for="feedback2-3" class="s3"></label>
+                            </div>
+                        </div>
+                        <div class="scale-control">
+                            <div class="scale-input">
+                                <input type="radio" name="feedback2" id="feedback2-4" value="4" ng-model="feedback.fun">
+                                <label for="feedback2-4" class="s4"></label>
+                            </div>
+                        </div>
+                        <div class="scale-control">
+                            <div class="scale-input">
+                                <input type="radio" name="feedback2" id="feedback2-5" value="5" ng-model="feedback.fun">
+                                <label for="feedback2-5" class="s5"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feedback-item binary">
+                    <div class="feedback-question">Did you learn something?</div>
+                    <div class="feedback-controls">
+                        <div class="scale-control binary">
+                            <div class="scale-input">
+                                <input type="radio" name="feedback1" id="feedback1-1" value="1" ng-model="feedback.learning">
+                                <label for="feedback1-1" class="like"></label>
+                            </div>
+                        </div>
+                        <div class="scale-control binary">
+                            <div class="scale-input">
+                                <input type="radio" name="feedback1" id="feedback1-2" value="0" ng-model="feedback.learning">
+                                <label for="feedback1-2" class="dislike"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feedback-item binary">
+                    <div class="feedback-question">Do you recommend it?</div>
+                    <div class="feedback-controls">
+                        <div class="scale-control binary">
+                            <div class="scale-input">
+                                <input type="radio" name="feedback3" id="feedback3-1" value="1" ng-model="feedback.recommend">
+                                <label for="feedback3-1" class="like"></label>
+                            </div>
+                        </div>
+                        <div class="scale-control binary">
+                            <div class="scale-input">
+                                <input type="radio" name="feedback3" id="feedback3-2" value="0" ng-model="feedback.recommend">
+                                <label for="feedback3-2" class="dislike"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="info-footer">
+            <div class="content">
+                <div class="feedback-summary">
+                    <div class="feedback-item">
+                        <div class="feedback-question">To continue, tell us how you feel?</div>
+                        <div>
+                            <button type="button" class="face-btn happy" tap="smile()"></button>
+                            <button type="button" class="face-btn indifferent" tap="meh()"></button>
+                            <button type="button" class="face-btn sad" tap="frown()"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sub-screen" ng-show="done()">
+        <div class="center main valignwrapper feedback">
+            <div class="valign pad">
+                <h1 ng-bind="feedbackResponse().title">Thanks!</h1>
+                <div class="smiley" ng-class="feeling()"></div>
+                <div class="feedback-response" ng-bind="feedbackResponse().text"></div>
+            </div>
+        </div>
+    </div>
+</div>'), e.put("gameid.html", '
+<div class="center join_view valignwrapper" ios7lazyfix>
+    <div class="valign">
+        <div class="logo center-block"><span>Kahoot!</span>
+        </div>
+        <form ng-submit="joinSession(gameId)">
+            <input id="inputSession" ios7fix class="username" placeholder="Game pin" ng-model="gameId" type="tel" maxlength="6" shake="badGameId">
+            <button type="button" class="btn btn-block btn-greyscale join" blocking tap="joinSession(gameId)">Enter</button>
+        </form>
+    </div>
+    <p class="info" ng-show="notStandalone()">Make your own at <a href="https://getkahoot.com" target="_system">getkahoot.com</a></a>
+    </p>
+</div>'), e.put("gameover.html", '
+<div class="screen gameover-screen" ios7lazyfix>
+    <div class="statusbar top endscreen">
+        <div class="info">
+            <div ng-class="scoreClass()" ng-cloak>{{totalScore}}</div>
+            <div class="username" ng-cloak>{{user.cleanName}}</div>
+        </div>
+        <div class="title">
+            <div class="question" ng-cloak>{{statusBarTitle}}</div>
+        </div>
+    </div>
+    <div class="center valignwrapper gameover" ng-class="gameOverClass()">
+        <div class="valign">
+            <h1 ng-bind-html="gameoverTitle()"></h1>
+            <h4 ng-cloak ng-bind-html="resultMessage()"></h4>
+            <div class="resultsList" ng-class="resultsListClass()">
+                <div class="correct">
+                    <div class="icon"></div>
+                    <div class="answers" ng-cloak>{{result.correctCount}} correct</div>
+                </div>
+                <div class="incorrect">
+                    <div class="icon"></div>
+                    <div class="answers" ng-cloak>{{result.incorrectCount}} incorrect</div>
+                </div>
+            </div>
+            <div ng-class="shareSocialClass()"> <span class="text">Share my {{shareWhat}}:</span> <a ng-click="shareTwitter()" class="but-twitter" type="button">Tweet on twitter</a> <a ng-click="shareFacebook()" class="but-facebook" type="button">Post to my wall</a> </div>
+        </div>
+    </div>
+    <div class="info-footer">
+        <div class="divider"></div>
+        <div class="content">
+            <p><a href="https://getkahoot.com/register/" target="_system"><strong>Get my free account now</strong> and start making my own! <i class="icon-link"></i></a>
+            </p>
+        </div>
+    </div>
+    <div class="statusbar fixed bottom">
+        <div class="username" ng-cloak>{{user.cleanName}}</div>
+        <div ng-class="scoreClass()" ng-cloak>{{totalScore}}</div>
+    </div>
+</div>'), e.put("getready.html", '
+<div class="statusbar top" ios7lazyfix>
+    <div class="info">
+        <div ng-class="scoreClass()" ng-cloak>{{totalScore}}</div>
+        <div class="playerrank" ng-bind-html="playerRank"></div>
+        <div class="username" ng-cloak>{{user.cleanName}}</div>
+    </div>
+    <div class="title">
+        <div class="number" ng-cloak>{{questionNumber(\'Q\')}}</div>
+        <div class="question" ng-cloak>{{statusBarTitle}}</div>
+    </div>
+</div>
+<div class="center intro valignwrapper">
+    <div class="valign">
+        <h1 ng-cloak>{{questionNumber(\'Question \')}}</h1>
+        <h1 class="counter" ng-cloak>{{counter}}</h1>
+        <h4 ng-bind-html="introMessage()"></h4> </div>
+</div>
+<div class="statusbar fixed bottom">
+    <div class="username" ng-cloak>{{user.cleanName}}</div>
+    <div ng-class="scoreClass()" ng-cloak>{{totalScore}}</div>
+    <div class="playerrank" ng-bind-html="playerRank"></div>
+</div>'), e.put("instructions.html", '
+<div class="screen instructions-screen" ios7lazyfix>
+    <div class="statusbar top">
+        <div class="info">
+            <div ng-class="scoreClass()" ng-cloak>{{totalScore}}</div>
+            <div class="username" ng-cloak>{{user.cleanName}}</div>
+        </div>
+        <div class="title">
+            <div class="question" ng-cloak>{{statusBarTitle}}</div>
+        </div>
+    </div>
+    <div class="center main valignwrapper instructions">
+        <div class="valign pad">
+            <h1>You&rsquo;re In!</h1>
+            <h4>Did you see your name appear at the front?</h4> </div>
+    </div>
+    <div class="statusbar fixed bottom">
+        <div class="username" ng-cloak>{{user.cleanName}}</div>
+        <div ng-class="scoreClass()" ng-cloak>{{totalScore}}</div>
+    </div>
+</div>'), e.put("join.html", '
+<div class="screen join-screen" ios7lazyfix>
+    <div class="statusbar">
+        <div class="title" ng-cloak>{{statusBarTitle}}</div>
+    </div>
+    <div class="center join_view valignwrapper">
+        <div class="valign">
+            <h1>Play Now</h1>
+            <form ng-submit="join(user)">
+                <input id="username" ios7fix class="username" type="text" placeholder="Nickname" ng-model="user.name" maxlength="15" shake="badUsername">
+                <button type="button" class="btn btn-block btn-greyscale join" blocking tap="join(user)">Join game</button>
+            </form>
+        </div>
+    </div>
+</div>'), e.put("ranking.html", '
+<div class="screen ranking-screen" ios7lazyfix>
+    <div class="statusbar top">
+        <div class="info">
+            <div ng-class="scoreClass()" ng-cloak>{{totalScore}}</div>
+            <div class="playerrank" ng-bind-html="playerRank"></div>
+            <div class="username" ng-cloak>{{user.cleanName}}</div>
+        </div>
+        <div class="title">
+            <div class="question" ng-cloak>{{statusBarTitle}}</div>
+        </div>
+    </div>
+    <div class="center valignwrapper animated-background">
+        <div class="valign pad">
+            <h1 ng-bind-html="primaryMessage"></h1>
+            <h4 ng-bind-html="secondaryMessage"></h4> </div>
+    </div>
+    <div class="statusbar fixed bottom">
+        <div class="username" ng-cloak>{{user.cleanName}}</div>
+        <div ng-class="scoreClass()" ng-cloak>{{totalScore}}</div>
+        <div class="playerrank" ng-bind-html="playerRank"></div>
+    </div>
+</div>'), e.put("start.html", '
+<div class="screen start-screen" ios7lazyfix>
+    <div class="statusbar top">
+        <div class="info">
+            <div ng-cloak ng-class="scoreClass()">{{totalScore}}</div>
+            <div class="username" ng-cloak>{{user.cleanName}}</div>
+        </div>
+        <div class="title">
+            <div class="question">{{statusBarTitle}}</div>
+        </div>
+    </div>
+    <div class="center main valignwrapper start">
+        <div class="valign pad">
+            <h1>Get Ready!</h1>
+            <div class="spinner" spinner></div>
+            <h4>Loading</h4> </div>
+    </div>
+    <div class="statusbar fixed bottom">
+        <div class="username" ng-cloak>{{user.cleanName}}</div>
+        <div ng-class="scoreClass()" ng-cloak>{{totalScore}}</div>
+    </div>
+</div>
