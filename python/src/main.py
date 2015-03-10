@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions as ec
 
 
 url = 'http://kahoot.it/'
-maximum_wait_time = 120
+maximum_wait_time = 300
 letter_answers = ['A', 'B', 'C', 'D']
 bards = []
 
