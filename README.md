@@ -1,5 +1,7 @@
 ## Kaloot
 
+Bot for the quiz game Kahoot!
+
 ### Installation
 
 First, install the following:
@@ -10,7 +12,7 @@ First, install the following:
 
 For Ubuntu:
 ```bash
-$ sudo apt-get install python-dev python-virtualenv phantomjs
+$ sudo apt-get install python-dev python-virtualenv phantomjs chromium-chromedriver
 ```
 
 After installing the requirements, cd into the root project folder and run the following commands:
