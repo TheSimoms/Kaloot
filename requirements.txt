@@ -1,2 +1,3 @@
 # PIP requirements
-selenium==2.43.0
+websocket-client==0.37.0
+requests==2.11.1
