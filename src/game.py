@@ -13,21 +13,21 @@ class Question:
 
 
 class Game:
-    def __init__(self, game_id, nickname):
+    def __init__(self, index, game_id, nickname):
+        self.index = index
         self.game_id = game_id
         self.nickname = nickname
 
-        self.connection = Connection(self.game_id)
+        self.connection = Connection(self.index, self.game_id, self.nickname)
 
-        self.login()
+    def start(self):
+        self.connection.start_game()
 
-    def login(self):
-        self.connection.login(self.nickname)
-
-    def game_completed(self, content):
+    def game_completed(self, results):
         logging.info(
-            'Game completed. Ranked #%d of %d. User: %s.' % (
-                content['rank'], content['playerCount'], self.nickname
+            'Bot %d; Game completed. Nickname: %s. Ranked #%d of %d. %d of %d correct answers' % (
+                self.index, self.nickname, results['rank'], results['playerCount'],
+                results['correctCount'], len(results['answers'])
             )
         )
 
@@ -66,7 +66,9 @@ class Game:
             answers = content['answerMap']
 
             if question_index >= len(quiz_question_answers) or question_index < 0:
-                logging.error('Invalid question index')
+                logging.error(
+                    'Bot %d; Invalid question index; %s' % (self.index, str(question_index))
+                )
 
                 return question_index >= len(quiz_question_answers)
 
@@ -101,4 +103,4 @@ class Game:
         result = self.connection.receive_message('/service/controller')
 
         if not result['successful']:
-            logging.error('Was not able to answer question')
+            logging.error('Bot %d; Was not able to answer question' % self.index)

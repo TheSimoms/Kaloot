@@ -1,11 +1,24 @@
 import logging
+import random
+
+from threading import Thread
 
 from game import Game
 
 
-class Bot:
-    def __init__(self, game_id, nickname):
-        self.game = Game(game_id, nickname)
+class Bot(Thread):
+    def __init__(self, index, game_id, nickname):
+        Thread.__init__(self)
+
+        self.index = index
+        self.game = Game(index, game_id, nickname)
+
+    def run(self):
+        self.game.start()
+        self.answer_questions()
+
+    def answer_question(self, question):
+        raise NotImplementedError
 
     def answer_questions(self):
         while True:
@@ -17,8 +30,31 @@ class Bot:
             question_number = question.index + 1
 
             if question.awaiting_question:
-                logging.debug('Awaiting question %d' % question_number)
+                logging.info('Bot %d; Awaiting question %d' % (self.index, question_number))
             else:
-                logging.debug('Answering question %d' % question_number)
+                logging.info('Bot %d; Answering question %d' % (self.index, question_number))
 
-                self.game.answer_question(1)
+                self.answer_question(question)
+
+
+class DeterministicBot(Bot):
+    def __init__(self, index, game_id, nickname, answers):
+        self.answers = answers
+        self.number_of_answers = len(answers)
+
+        super().__init__(index, game_id, nickname)
+
+    def answer_question(self, question):
+        if (self.number_of_answers > question.index and
+            len(question.answers) > self.answers[question.index]):
+            self.game.answer_question(self.answers[question.index])
+        else:
+            self.game.answer_question(random.randint(0, question.number_of_answers - 1))
+
+
+class RandomBot(Bot):
+    def __init__(self, index, game_id, nickname):
+        super().__init__(index, game_id, nickname)
+
+    def answer_question(self, question):
+        self.game.answer_question(random.randint(0, question.number_of_answers - 1))

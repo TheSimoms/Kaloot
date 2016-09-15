@@ -6,18 +6,24 @@ import logging
 import random
 import string
 import time
-import threading
+
+from threading import Timer
 
 
 class Connection:
-    def __init__(self, game_id):
+    def __init__(self, index, game_id, nickname):
+        self.index = index
         self.game_id = game_id
+        self.nickname = nickname
+
         self.client_id = None
 
         self.websocket = None
         self.ping_timer = None
 
+    def start_game(self):
         self.setup_socket()
+        self.login(self.nickname)
 
     def send_message(self, channel, message):
         packet = {
@@ -30,7 +36,7 @@ class Connection:
         for key, value in message.items():
             packet[key] = value
 
-        logging.debug('Sending message')
+        logging.debug('Bot %d; Sending message' % self.index)
         logging.debug(packet)
 
         self.websocket.send(json.dumps(packet))
@@ -42,7 +48,7 @@ class Connection:
             while result['channel'] != channel:
                 result = json.loads(self.websocket.recv())[0]
 
-        logging.debug('Receiving message')
+        logging.debug('Bot %d; Receiving message' % self.index)
         logging.debug(result)
 
         return result
@@ -58,7 +64,7 @@ class Connection:
         result = self.receive_message('/meta/handshake')
 
         if ('clientId' not in result):
-            logging.error('No valid client ID received during handshake')
+            logging.error('Bot %d; No valid client ID received during handshake' % self.index)
 
         self.client_id = result['clientId']
 
@@ -88,7 +94,9 @@ class Connection:
                     if 'error' in result['data']:
                         if result['data']['description'] == 'Duplicate name':
                             logging.error(
-                                'Duplicate name detected. Trying again with random seed.'
+                                'Bot %d; Duplicate name detected. '
+                                'Trying again with random seed' % self.index
+
                             )
 
                             self.login(
@@ -97,21 +105,24 @@ class Connection:
 
                             return
 
-                    logging.debug('Successfully logged in')
+                    logging.info('Bot %d; Successfully logged in as %s' % (self.index, nickname))
 
                     break
 
     def generate_session_token(self):
-        return requests.get(
-            'https://kahoot.it/reserve/session/%d' % self.game_id
-        ).headers['X-Kahoot-Session-Token']
+        try:
+            return requests.get(
+                'https://kahoot.it/reserve/session/%d' % self.game_id
+            ).headers['X-Kahoot-Session-Token']
+        except KeyError:
+            return self.generate_session_token()
 
     def ping_server(self):
-        logging.debug('Pinging server')
+        logging.debug('Bot %d; Pinging server' % self.index)
 
         self.send_message('/meta/connect', {'connectionType': 'websocket'})
 
-        self.ping_timer = threading.Timer(5.0, self.ping_server)
+        self.ping_timer = Timer(5.0, self.ping_server)
         self.ping_timer.start()
 
     def stop_ping(self):
