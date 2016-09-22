@@ -13,14 +13,13 @@ class Question:
 
 
 class Game:
-    def __init__(self, index, game_id, nickname):
+    def __init__(self, index, game_id, nickname=None):
         self.index = index
         self.game_id = game_id
         self.nickname = nickname
 
-        self.connection = Connection(self.index, self.game_id, self.nickname)
-
     def start(self):
+        self.connection = Connection(self.index, self)
         self.connection.start_game()
 
     def game_completed(self, results):
@@ -58,7 +57,7 @@ class Game:
                 return None
 
             if ('quizQuestionAnswers' not in content or 'questionIndex' not in content or
-                'answerMap' not in content):
+                    'answerMap' not in content):
                 continue
 
             quiz_question_answers = content['quizQuestionAnswers']

@@ -7,7 +7,7 @@ from game import Game
 
 
 class Bot(Thread):
-    def __init__(self, index, game_id, nickname):
+    def __init__(self, index, game_id, nickname=None):
         Thread.__init__(self)
 
         self.index = index
@@ -37,8 +37,16 @@ class Bot(Thread):
                 self.answer_question(question)
 
 
+class RandomBot(Bot):
+    def __init__(self, index, game_id, nickname=None):
+        super().__init__(index, game_id, nickname)
+
+    def answer_question(self, question):
+        self.game.answer_question(random.randint(0, question.number_of_answers - 1))
+
+
 class DeterministicBot(Bot):
-    def __init__(self, index, game_id, nickname, answers):
+    def __init__(self, index, game_id, nickname=None, answers=[]):
         self.answers = answers
         self.number_of_answers = len(answers)
 
@@ -46,15 +54,7 @@ class DeterministicBot(Bot):
 
     def answer_question(self, question):
         if (self.number_of_answers > question.index and
-            len(question.answers) > self.answers[question.index]):
+                len(question.answers) > self.answers[question.index]):
             self.game.answer_question(self.answers[question.index])
         else:
             self.game.answer_question(random.randint(0, question.number_of_answers - 1))
-
-
-class RandomBot(Bot):
-    def __init__(self, index, game_id, nickname):
-        super().__init__(index, game_id, nickname)
-
-    def answer_question(self, question):
-        self.game.answer_question(random.randint(0, question.number_of_answers - 1))

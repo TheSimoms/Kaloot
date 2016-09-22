@@ -1,16 +1,23 @@
-import bot
-import time
+import argparse
+
+from kaloot import RandomKaloot
 
 
 if __name__ == '__main__':
-    threads = []
+    parser = argparse.ArgumentParser()
 
-    game_id = 202686
+    # Different game modes
+    modes = {
+        'random': RandomKaloot
+    }
 
-    for i in range(256):
-        threads.append(bot.RandomBot(i, game_id, 'Derp'))
+    parser.add_argument('-g', '--game', help='Game ID', type=int, required=True)
+    parser.add_argument('-n', help='Number of bots', type=int, default=100)
+    parser.add_argument(
+        '-m', '--mode', help='Game mode', choices=modes.keys()
+    )
 
-        threads[i].start()
+    args = parser.parse_args()
 
-    for i in range(256):
-        threads[i].join()
+    # Start chosen game mode
+    modes.get(args.mode, modes['random'])(args)

@@ -11,10 +11,9 @@ from threading import Timer
 
 
 class Connection:
-    def __init__(self, index, game_id, nickname):
+    def __init__(self, index, game):
         self.index = index
-        self.game_id = game_id
-        self.nickname = nickname
+        self.game = game
 
         self.client_id = None
 
@@ -23,7 +22,7 @@ class Connection:
 
     def start_game(self):
         self.setup_socket()
-        self.login(self.nickname)
+        self.login(self.game.nickname)
 
     def send_message(self, channel, message):
         packet = {
@@ -76,11 +75,18 @@ class Connection:
 
         result = self.receive_message('/meta/connect')
 
+    @staticmethod
+    def random_nickname():
+        return ''.join(random.choice(string.ascii_lowercase) for i in range(15))
+
     def login(self, nickname):
+        if nickname is None:
+            nickname = self.random_nickname()
+
         self.send_message('/service/controller', {
             'data': {
                 'type': 'login',
-                'gameid': self.game_id,
+                'gameid': self.game.game_id,
                 'host': 'kahoot.it',
                 'name': nickname,
             }
@@ -99,20 +105,20 @@ class Connection:
 
                             )
 
-                            self.login(
-                                ''.join(random.choice(string.ascii_lowercase) for i in range(15))
-                            )
+                            self.login(self.random_nickname())
 
                             return
 
                     logging.info('Bot %d; Successfully logged in as %s' % (self.index, nickname))
+
+                    self.game.nickname = nickname
 
                     break
 
     def generate_session_token(self):
         try:
             return requests.get(
-                'https://kahoot.it/reserve/session/%d' % self.game_id
+                'https://kahoot.it/reserve/session/%d' % self.game.game_id
             ).headers['X-Kahoot-Session-Token']
         except KeyError:
             return self.generate_session_token()
@@ -130,10 +136,10 @@ class Connection:
 
     def setup_socket(self):
         self.websocket = websocket.create_connection(
-            'wss://kahoot.it/cometd/%d/%s' % (self.game_id, self.generate_session_token()),
+            'wss://kahoot.it/cometd/%d/%s' % (self.game.game_id, self.generate_session_token()),
             headers={
                 'Origin': 'https://kahoot.it',
-                'Cookie': 'no.mobitroll.session=%d' % self.game_id
+                'Cookie': 'no.mobitroll.session=%d' % self.game.game_id
             }
         )
 
