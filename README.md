@@ -2,23 +2,16 @@
 
 Bot for the quiz game Kahoot!
 
-### Installation
+### Dependencies
 
-First, install the following:
-  * Python 2.7
-  * Virtualenv for Python 2.7
-  * Pip for python 2.7
-  * PhantomJS
+  * Python 3
+  	* websocket-client
+	* requests
 
-For Ubuntu:
-```bash
-$ sudo apt-get install python-dev python-virtualenv phantomjs chromium-chromedriver
-```
+Both Python packages are available through ``pip``, the package manager.
 
-After installing the requirements, cd into the root project folder and run the following commands:
-```bash
-$ virtualenv --distribute KALOOT
-$ . KALOOT/bin/activate
-$ pip install -r requirements.txt
-$ cd src
-```
+### Running the bot
+
+The bot in run from the file ``src/main.py``.
+
+Issue the command ``python3 src/main.py -h`` for instructions on how to use the bot.
