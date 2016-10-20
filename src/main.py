@@ -16,6 +16,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '-m', '--mode', help='Game mode', choices=modes.keys()
     )
+    parser.add_argument('--nicknames', help='Nickname set', choices=('bard'))
 
     args = parser.parse_args()
 
