@@ -7,11 +7,11 @@ from game import Game
 
 
 class Bot(Thread):
-    def __init__(self, index, game_id, nickname=None):
+    def __init__(self, index, game_id, nickname=None, prefix=None):
         Thread.__init__(self)
 
         self.index = index
-        self.game = Game(index, game_id, nickname)
+        self.game = Game(index, game_id, nickname, prefix)
 
     def run(self):
         self.game.start()
@@ -38,8 +38,8 @@ class Bot(Thread):
 
 
 class RandomBot(Bot):
-    def __init__(self, index, game_id, nickname=None):
-        super().__init__(index, game_id, nickname)
+    def __init__(self, index, game_id, nickname=None, prefix=None):
+        super().__init__(index, game_id, nickname, prefix)
 
     def answer_question(self, question):
         self.game.answer_question(random.randint(0, question.number_of_answers - 1))

@@ -75,9 +75,16 @@ class Connection:
 
         result = self.receive_message('/meta/connect')
 
-    @staticmethod
-    def random_nickname():
-        return ''.join(random.choice(string.ascii_lowercase) for i in range(15))
+    def random_nickname(self):
+        if self.game.prefix is not None:
+            nickname = '%s ' % self.game.prefix
+        else:
+            nickname = ''
+
+        for _ in range(0, 15 - len(nickname)):
+            nickname += random.choice(string.ascii_lowercase)
+
+        return nickname
 
     def login(self, nickname):
         if nickname is None:

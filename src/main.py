@@ -16,7 +16,10 @@ if __name__ == '__main__':
     parser.add_argument(
         '-m', '--mode', help='Game mode', choices=modes.keys()
     )
-    parser.add_argument('--nicknames', help='Nickname set', choices=('bard'))
+    parser.add_argument('--nicknames', help='Nickname set. File name of file in nicknames folder')
+    parser.add_argument(
+        '--prefix', help='Prefix to add to random nicknames', type=str, default=None
+    )
 
     args = parser.parse_args()
 
