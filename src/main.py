@@ -11,14 +11,19 @@ if __name__ == '__main__':
         'random': RandomKaloot
     }
 
-    parser.add_argument('-g', '--game', help='Game ID', type=int, required=True)
-    parser.add_argument('-n', help='Number of bots', type=int, default=100)
+    parser.add_argument('-g', '--game', type=int, required=True, help='Game ID')
+    parser.add_argument('-n', type=int, default=100, help='Number of bots')
     parser.add_argument(
-        '-m', '--mode', help='Game mode', choices=modes.keys()
+        '-m', '--mode', choices=modes.keys(), help='Game mode'
     )
-    parser.add_argument('--nicknames', help='Nickname set. File name of file in nicknames folder')
     parser.add_argument(
-        '--prefix', help='Prefix to add to random nicknames', type=str, default=None
+        '--nicknames',
+        type=str,
+        help='Nickname sets. Use either full path to file, or name of file in "nicknames" folder.'
+             ' Defaults to all. To disable nicknames, type "None". Comma-separated'
+    )
+    parser.add_argument(
+        '--prefix', type=str, default='Bard', help='Prefix to add to random nicknames'
     )
 
     args = parser.parse_args()
