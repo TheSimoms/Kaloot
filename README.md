@@ -4,6 +4,7 @@ Bot for the quiz game Kahoot!
 
 ### Dependencies
 
+  * PhantomJS
   * Python 3
   	* websocket-client
 	* requests
