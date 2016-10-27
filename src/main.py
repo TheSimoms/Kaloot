@@ -20,10 +20,16 @@ if __name__ == '__main__':
         '--nicknames',
         type=str,
         help='Nickname sets. Use either full path to file, or name of file in "nicknames" folder.'
-             ' Defaults to all. To disable nicknames, type "None". Comma-separated'
+             ' Defaults to all files in "nicknames" folder. To disable, type "None".' +
+             ' Comma-separated'
     )
     parser.add_argument(
         '--prefix', type=str, default='Bard', help='Prefix to add to random nicknames'
+    )
+    parser.add_argument(
+        '--delay', type=float,
+        help='Adds delay to bot\'s answer. Randomly waits in the range of [0, DELAY) seconds' +
+             ' before each answer'
     )
 
     args = parser.parse_args()

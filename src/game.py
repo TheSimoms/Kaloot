@@ -13,11 +13,11 @@ class Question:
 
 
 class Game:
-    def __init__(self, index, game_id, nickname=None, prefix=None):
-        self.index = index
-        self.game_id = game_id
-        self.nickname = nickname
-        self.prefix = prefix
+    def __init__(self, **kwargs):
+        self.index = kwargs.get('index')
+        self.game_id = kwargs.get('game_id')
+        self.nickname = kwargs.get('nickname', None)
+        self.prefix = kwargs.get('prefix', None)
 
     def start(self):
         self.connection = Connection(self.index, self)

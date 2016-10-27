@@ -56,7 +56,8 @@ class RandomKaloot(Kaloot):
             arguments = {
                 'index': i,
                 'game_id': args.game,
-                'prefix': args.prefix
+                'prefix': args.prefix,
+                'delay': args.delay
             }
 
             if self.nicknames is not None and i < len(self.nicknames):
