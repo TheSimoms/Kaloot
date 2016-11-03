@@ -27,7 +27,7 @@ if __name__ == '__main__':
         '--prefix', type=str, default='Bard', help='Prefix to add to random nicknames'
     )
     parser.add_argument(
-        '--delay', type=float,
+        '--delay', type=float, default=2.5,
         help='Adds delay to bot\'s answer. Randomly waits in the range of [0, DELAY) seconds' +
              ' before each answer'
     )

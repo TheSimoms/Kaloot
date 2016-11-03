@@ -1,4 +1,3 @@
-import sys
 import websocket
 import requests
 import json
@@ -6,8 +5,12 @@ import logging
 import random
 import string
 import time
+import socket
 
 from threading import Timer
+
+
+ERROR_RETRY_DELAY = 3.0
 
 
 class Connection:
@@ -129,6 +132,12 @@ class Connection:
             ).headers['X-Kahoot-Session-Token']
         except KeyError:
             return self.generate_session_token()
+        except (
+            requests.exceptions.ConnectionError, websocket._exceptions.WebSocketBadStatusException
+        ):
+            time.sleep(random.uniform(0.0, ERROR_RETRY_DELAY))
+
+            return self.generate_session_token()
 
     def ping_server(self):
         logging.debug('Bot %d; Pinging server' % self.index)
@@ -142,14 +151,21 @@ class Connection:
         self.ping_timer.cancel()
 
     def setup_socket(self):
-        self.websocket = websocket.create_connection(
-            'wss://kahoot.it/cometd/%d/%s' % (self.game.game_id, self.generate_session_token()),
-            headers={
-                'Origin': 'https://kahoot.it',
-                'Cookie': 'no.mobitroll.session=%d' % self.game.game_id
-            }
-        )
+        try:
+            self.websocket = websocket.create_connection(
+                'wss://kahoot.it/cometd/%d/%s' % (
+                    self.game.game_id, self.generate_session_token()
+                ),
+                headers={
+                    'Origin': 'https://kahoot.it',
+                    'Cookie': 'no.mobitroll.session=%d' % self.game.game_id
+                }
+            )
 
-        self.handshake()
-        self.connect()
-        self.ping_server()
+            self.handshake()
+            self.connect()
+            self.ping_server()
+        except socket.gaierror:
+            time.sleep(random.uniform(0.0, ERROR_RETRY_DELAY))
+
+            self.setup_socket()
