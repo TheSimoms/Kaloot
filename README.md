@@ -1,3 +1,7 @@
+# BROKEN
+
+The bot does not work at the moment. Updates to Kahoot has broken it.
+
 ## Kaloot
 
 Bot for the quiz game Kahoot!
