@@ -4,7 +4,7 @@ from kaloot import RandomKaloot
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     # Different game modes
     modes = {
@@ -14,7 +14,7 @@ if __name__ == '__main__':
     parser.add_argument('-g', '--game', type=int, required=True, help='Game ID')
     parser.add_argument('-n', type=int, default=100, help='Number of bots')
     parser.add_argument(
-        '-m', '--mode', choices=modes.keys(), help='Game mode'
+        '-m', '--mode', choices=modes.keys(), default='random', help='Game mode'
     )
     parser.add_argument(
         '--nicknames',
